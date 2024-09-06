@@ -1,16 +1,26 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Text, Pressable, Linking } from 'react-native';
+import { StyleSheet, Text, Pressable, Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function TabTwoScreen() {
+  const emails = ["prateepthe7@gmail.com"]
   const sendMail = () => {
-    return Linking.openURL('mailto://prateepthe7@gmail.com&subject=abcdefg&body=body')
+    console.log("android "+JSON.stringify(Linking.canOpenURL(`mailto:${emails}`)));
+    Linking.canOpenURL(`mailto:${emails}`).then(async ()=>{
+      try {
+        return await Linking.openURL(`mailto:${emails}`);
+      } catch (error) {
+        console.log(error);
+      }
+    })
 
   }
   return (
-    <Pressable style={styles.button} onPress={sendMail}>
-      <Text>Send Email</Text>
-    </Pressable>
+    <SafeAreaView>
+      <Pressable style={styles.button} onPress={sendMail}>
+        <Text>Send Email</Text>
+      </Pressable>
+    </SafeAreaView>
   );
 }
 
@@ -26,6 +36,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   button:{
-    backgroundColor:'blue'
+    padding:10,
+    margin:10,
+    borderRadius:10,
+    backgroundColor:'lightblue',
+    textAlign:'center'
   }
 });
